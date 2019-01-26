@@ -1,5 +1,8 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
+
+// import { FirebaseContext } from '../Firebase'
+import { withFirebase } from '../Firebase'
 
 import * as ROUTES from '../../constants/routes'
 
@@ -7,10 +10,13 @@ const SignUpPage = () => (
   <div>
     <h1>SignUp</h1>
     <SignUpForm />
+    {/* <FirebaseContext.Consumer>
+      {firebase => <SignUpForm firebase={firebase} />}
+    </FirebaseContext.Consumer> */}
   </div>
 )
 
-class SignUpForm extends React.Component {
+class SignUpFormBase extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -22,8 +28,21 @@ class SignUpForm extends React.Component {
     }
   }
 
-  onSubmit = e => {
+  // const SignUpLink = () => ()
 
+  // const SignUpForm = withFirebase(SignUpFormBase)
+
+  onSubmit = e => {
+    const { username, email, passwordOne } = this.state
+    this.props.firebase.doCreateUserWithEmailAndPassword(email, passwordOne)
+      .then(authUser => {
+        this.setState({ ...this.state })
+        this.props.history.push(ROUTES.HOME)
+      })
+      .catch(error => {
+        this.setState({ error })
+      })
+    e.preventDefault()
   }
 
   onChange = e => {
@@ -39,11 +58,7 @@ class SignUpForm extends React.Component {
       error,
     } = this.state
 
-    const isInValid =
-      passwordOne !== passwordTwo ||
-      passwordOne === '' ||
-      email = '' ||
-        username = '';
+    const isInValid = passwordOne !== passwordTwo || passwordOne === '' || email === '' || username === '';
 
     return (
       <form onSubmit={this.onSubmit}>
@@ -63,5 +78,6 @@ const SignUpLink = () => (
     Don't have account? <Link to={ROUTES.SIGN_UP}> Sign Up</Link>
   </p>
 )
+const SignUpForm = withRouter(withFirebase(SignUpFormBase))
 export default SignUpPage
 export { SignUpForm, SignUpLink }
