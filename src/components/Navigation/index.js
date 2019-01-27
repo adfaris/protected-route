@@ -7,8 +7,7 @@ import { AuthUserContext } from '../Session'
 const Navigation = ({ authUser }) =>
   <div>
     <AuthUserContext.Consumer>
-      {authUser=> 
-        authUser => <NavigationAuth /> : <NavigationNonAuth />}
+      {authUser => (authUser ? <NavigationAuth /> : <NavigationNonAuth />)}
     </AuthUserContext.Consumer>
   </div>
 
