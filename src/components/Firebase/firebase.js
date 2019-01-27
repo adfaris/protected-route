@@ -8,7 +8,7 @@ var config = {
   projectId: process.env.REACT_APP_PROJECT_ID,
   storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
   messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
-};
+}
 
 class Firebase {
   constructor() {
@@ -23,6 +23,8 @@ class Firebase {
 
   doSignInWithEmailAndPassword = (email, password) =>
     this.auth.signInWithEmailAndPassword(email, password)
+
+  doSignOut = () => this.auth.signOut()
 
   doPasswordReset = email => this.auth.sendPasswordResetEmail(email)
 
