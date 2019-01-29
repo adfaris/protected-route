@@ -1,9 +1,11 @@
 import React from 'react'
+import { withAuthorization } from '../Session'
 
-const Admin = () => (
+const Admin = () =>
   <div>
     <h1>Admin page</h1>
   </div>
-)
 
-export default Admin
+const condition = authUser => !!authUser
+
+export default withAuthorization(condition)(Admin)
